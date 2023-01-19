@@ -1,0 +1,138 @@
+import styled from "styled-components"
+import { Link } from "react-router-dom"
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+
+export default function Login({ email, senha, setEmail, setSenha }){
+    const navigate = useNavigate()
+
+    function fazerLogin(event){
+        event.preventDefault();
+        const requisicao = axios.post("", {
+			email: email,
+			senha: senha
+		})
+        requisicao.then(() => navigate("/home"))
+        requisicao.catch((err) => console.log(err))
+    }
+
+    return (
+        <Container>
+            <Tela>
+            <Logo>
+                <p>
+                MyWallet
+                </p>      
+            </Logo>
+
+            <ContainerInputs>
+                <Inputs>
+                <input 
+                    type="email" 
+                    required 
+                    onChange={(e) => setEmail(e.target.value)} 
+                    placeholder="E-mail" 
+                    value={email}
+                />
+                <input 
+                    type="password" 
+                    required 
+                    onChange={(e) => setSenha(e.target.value)} 
+                    placeholder="Senha" 
+                    value={senha}
+                />
+                <button type="submit">Entrar</button>
+                </Inputs>
+                <p>Primeira vez? <LinkPersonalizado to={"/cadastro"}>Cadastre-se!</LinkPersonalizado></p>
+            </ContainerInputs>
+            
+        </Tela>
+        </Container>
+        
+    )
+}
+
+const Container = styled.div`
+width: 100vw;
+height: 100vh;
+background: #8C2EBE;
+display: flex;
+flex-direction: row;
+justify-content: center;
+`
+
+const Tela = styled.div`  
+
+`
+
+const Logo = styled.div`
+    margin-top: 150px;
+    display: flex;
+    justify-content: center;
+    p { 
+        font-family: 'Saira Stencil One';
+        font-weight: 400;
+        color: #FFFFFF;
+        font-size: 32px;
+    }
+`
+
+const ContainerInputs = styled.div`
+    margin-top: 24px;
+    p {
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 15px;
+        color: #FFFFFF;
+        margin-top: 36px;
+        margin-left: 16%;
+        line-height: 18px;
+        margin-left: 75px;
+    }
+
+`
+
+const Inputs = styled.form`
+    width: 326px;
+    input {
+        width: 326px;
+        height: 58px;
+        background: #FFFFFF;
+        border-radius: 5px;
+        margin-bottom: 13px;
+        border-style: none;
+        font-family: 'Raleway';
+        ::placeholder {
+            font-family: 'Raleway';
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 23px;
+            color: #000000;
+            padding: 3%;
+        }
+    }
+    button {
+        width: 326px;
+        height: 46px;
+        background-color: #A328D6;
+        border-radius: 5px;
+        border-style: none;
+        color: #FFFFFF;
+        font-family: 'Raleway';
+        font-weight: 700;
+        font-size: 20px;
+    }
+`
+
+const LinkPersonalizado = styled(Link)`
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    color: #FFFFFF;
+    margin-top: 36px;
+    line-height: 18px;
+    text-decoration: none;
+`
