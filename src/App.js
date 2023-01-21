@@ -1,16 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import React from "react";
 import Login from "./components/Login";
 import Cadastro from "./components/Cadastro";
 import Home from "./components/Home";
 import NovaEntrada from "./components/NovaEntrada";
 import NovaSaida from "./components/NovaSaida";
-import { useState } from "react";
-
 
 export default function App() {
-  const [email, setEmail] = useState("");
-	const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("")
+  const [email, setEmail] = useState("")
+	const [senha, setSenha] = useState("")
+  const [confirmaSenha, setConfirmaSenha] = useState("")
   const [valor, setValor] = useState("")
   const [descricao, setDescricao] = useState("")
 
@@ -32,6 +33,8 @@ export default function App() {
           setSenha={setSenha}
           nome={nome}
           setNome={setNome}
+          confirmaSenha={confirmaSenha}
+          setConfirmaSenha={setConfirmaSenha}
         />
       }/>
       <Route path="/home" element={

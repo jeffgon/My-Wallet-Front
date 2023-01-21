@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
+import React from "react"
 import { useNavigate } from "react-router-dom"
 
 export default function Home({ nome }){
@@ -18,7 +19,9 @@ export default function Home({ nome }){
                 </Topo>
 
                 <ContainerSemInformacoes>
-                    <p>Não há registros de entrada ou saída</p>
+                    <div>
+                        <p>Não há registros de entrada ou saída</p>
+                    </div>                   
                 </ContainerSemInformacoes>
 
                 <ContainerInformacoes>
@@ -96,7 +99,14 @@ const ContainerSemInformacoes = styled.div`
     margin-top: 18px;
     border-radius: 5px;
     position: relative;
+    div {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
     p {
+        width: 180px;
+        text-align: center;
         font-family: 'Raleway';
         font-style: normal;
         font-weight: 400;
@@ -105,7 +115,6 @@ const ContainerSemInformacoes = styled.div`
         color: #868686;
         position: absolute;
         top: 200px;
-        left: 25px;
     }
 `
 

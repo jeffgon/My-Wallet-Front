@@ -2,18 +2,34 @@ import styled from "styled-components"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import React from "react"
+import dotenv from "dotenv"
 
-export default function Cadastro({ email, setEmail, senha, setSenha, nome, setNome }){
+dotenv.config()
+
+export default function Cadastro({ 
+    email, 
+    setEmail, 
+    senha, setSenha, 
+    nome, setNome, 
+    confirmaSenha, 
+    setConfirmaSenha 
+}){
     const navigate = useNavigate()
 
-    function Cadastrar(event) {
+    function seCadastrar(event) {
         event.preventDefault()
-        const requisicao = axios.post("", {
+
+        const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/cadastro`, {
             email: email,
             senha: senha,
-            nome: nome
+            nome: nome,
+            confirmaSenha: confirmaSenha
         })
-        requisicao.then(() => navigate("/"))
+        requisicao.then((res) => {
+            navigate("/")
+            console.log(res)
+        })
         requisicao.catch((err) => console.log(err))
     }
 
@@ -25,7 +41,8 @@ export default function Cadastro({ email, setEmail, senha, setSenha, nome, setNo
             </Logo>
 
             <ContainerInputs>
-                <Inputs onSubmit={Cadastrar}>
+                <Inputs>
+                <form onSubmit={seCadastrar}>
                     <input 
                         type="name" 
                         required 
@@ -49,11 +66,13 @@ export default function Cadastro({ email, setEmail, senha, setSenha, nome, setNo
                     />
                     <input 
                         type="password" 
-                        required
-                        placeholder="Confirme sua senha"
-                        value={senha}
+                        required 
+                        onChange={(e) => setConfirmaSenha(e.target.value)} 
+                        placeholder="Senha"
+                        value={confirmaSenha}
                     />
                     <button type="submit">Cadastrar</button>
+                    </form>
                     <p>Já tem uma conta? <LinkPersonalizado to={"/"}>Entre agora!</LinkPersonalizado></p>
                 </Inputs>               
             </ContainerInputs>
@@ -104,7 +123,7 @@ const ContainerInputs = styled.div`
 
 `
 
-const Inputs = styled.form`
+const Inputs = styled.div`
     width: 326px;
     input {
         width: 324px;

@@ -1,6 +1,7 @@
 import styled from "styled-components"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import React from "react"
 
 export default function NovaSaida({ valor, setValor, descricao, setDescricao }){
 

@@ -2,18 +2,26 @@ import styled from "styled-components"
 import { Link } from "react-router-dom"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import React from "react"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 
 export default function Login({ email, senha, setEmail, setSenha }){
     const navigate = useNavigate()
 
-    function fazerLogin(event){
-        event.preventDefault();
-        const requisicao = axios.post("", {
-			email: email,
-			senha: senha
-		})
-        requisicao.then(() => navigate("/home"))
+    function fazerLogin(e){
+        e.preventDefault();
+
+        const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/login`, {
+            email: email,
+            senha: senha
+        })
+        requisicao.then((res) => {
+            navigate("/home")
+            console.log(res)
+        })
         requisicao.catch((err) => console.log(err))
     }
 
@@ -28,21 +36,23 @@ export default function Login({ email, senha, setEmail, setSenha }){
 
             <ContainerInputs>
                 <Inputs>
-                <input 
-                    type="email" 
-                    required 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    placeholder="E-mail" 
-                    value={email}
-                />
-                <input 
-                    type="password" 
-                    required 
-                    onChange={(e) => setSenha(e.target.value)} 
-                    placeholder="Senha" 
-                    value={senha}
-                />
-                <button type="submit">Entrar</button>
+                <form onSubmit={fazerLogin}>
+                    <input 
+                        type="email" 
+                        required 
+                        onChange={(e) => setEmail(e.target.value)} 
+                        placeholder="E-mail" 
+                        value={email}
+                    />
+                    <input 
+                        type="password" 
+                        required 
+                        onChange={(e) => setSenha(e.target.value)} 
+                        placeholder="Senha" 
+                        value={senha}
+                    />
+                    <button type="submit">Entrar</button>
+                </form>
                 </Inputs>
                 <p>Primeira vez? <LinkPersonalizado to={"/cadastro"}>Cadastre-se!</LinkPersonalizado></p>
             </ContainerInputs>
@@ -94,7 +104,7 @@ const ContainerInputs = styled.div`
 
 `
 
-const Inputs = styled.form`
+const Inputs = styled.div`
     width: 326px;
     input {
         width: 326px;
