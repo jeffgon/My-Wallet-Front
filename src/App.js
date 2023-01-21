@@ -14,6 +14,7 @@ export default function App() {
   const [confirmaSenha, setConfirmaSenha] = useState("")
   const [valor, setValor] = useState("")
   const [descricao, setDescricao] = useState("")
+  const [token, setToken] = useState("")
 
   return (
    <BrowserRouter>
@@ -24,6 +25,7 @@ export default function App() {
           setEmail={setEmail} 
           senha={senha} 
           setSenha={setSenha}
+          setToken={setToken}
       />}/>
       <Route path="/cadastro" element={
         <Cadastro 
@@ -39,6 +41,8 @@ export default function App() {
       }/>
       <Route path="/home" element={
         <Home 
+          token={token}
+          setNome={setNome}
           nome={nome}
         />
       }/>

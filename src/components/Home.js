@@ -1,10 +1,28 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import React from "react"
+import React, { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import axios from "axios"
 
-export default function Home({ nome }){
+export default function Home({ token, setNome, nome }){
     const navigate = useNavigate()
+
+    function carregarRegistros(){
+        useEffect(() => {
+            const requisicao = axios.get(`${process.env.REACT_APP_API_URL}/registros`, {
+                headers: {
+                        Authorization: `Bearer ${token}`
+                }
+                });
+                requisicao.then((res) => {
+                    setNome(res.data.nome)
+                    console.log(res)
+                } )
+                requisicao.catch((err) => console.log(err))
+        }, []) 
+    }
+    carregarRegistros()
+
 
     function voltarParaLogin(){
         navigate("/")
@@ -58,6 +76,7 @@ export default function Home({ nome }){
         </Container>
     )
 }
+
 
 const Container = styled.div`
 width: 100vw;

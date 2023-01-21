@@ -8,19 +8,17 @@ import dotenv from "dotenv"
 dotenv.config()
 
 
-export default function Login({ email, senha, setEmail, setSenha }){
+export default function Login({ email, senha, setEmail, setSenha, setToken }){
     const navigate = useNavigate()
 
     function fazerLogin(e){
         e.preventDefault();
 
-        const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/login`, {
-            email: email,
-            senha: senha
-        })
+        const dados = { email, senha }
+        const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/login`, dados)
         requisicao.then((res) => {
-            navigate("/home")
-            console.log(res)
+            setToken(res.data)
+            navigate("/home")           
         })
         requisicao.catch((err) => console.log(err))
     }
