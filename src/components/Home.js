@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import { AuthContext } from "../provider"
 
-export default function Home({ nome, setNome }){
+export default function Home({ nome, setNome, info, setInfo }){
     const { token } = React.useContext(AuthContext)
     const navigate = useNavigate()
     const registros = []
@@ -32,14 +32,12 @@ export default function Home({ nome, setNome }){
             }
         })
         requisicao.then((res) => {
-            console.log("chegou as informações de registro!", res)
-            registros.push(res.data)
-            console.log("registros:", registros)
+            console.log("chegou as informações de registro!", res.data)
+            setInfo(res.data)
         })
         requisicao.catch((err) => {
             console.log("Algo deu erro no banco de dados!", err)
         })
-
     },[])
    }
    carregarRegistros()
@@ -47,6 +45,8 @@ export default function Home({ nome, setNome }){
     function voltarParaLogin(){
         navigate("/")
     }
+
+    console.log("info estado:", info)
 
     return (
         <Container>
@@ -65,25 +65,14 @@ export default function Home({ nome, setNome }){
                 <ContainerInformacoes>
                     
                     <section>
+                        {info.map(i => (
                         <div>
-                            <p>30/1</p>
-                            <h1>Entrada</h1>
-                            <h2>Valor</h2>
+                            <p>{i.data}</p>
+                            <h1>{i.descricao}</h1>
+                            <h2>{i.valor}</h2>
                         </div>
-                        {registros.map(r => (
-                            r.map(reg => (
-                                <div>
-                                <p>{reg.data}</p>
-                                <h1>{reg.descricao}</h1>
-                                <h2>{reg.valor}</h2>
-                            </div>
-                            ))
                         ))}
                     </section>
-
-                    <Valor>
-                        
-                    </Valor>
                 </ContainerInformacoes>
 
                 <Botoes>
@@ -211,19 +200,10 @@ const ContainerInformacoes = styled.div`
                 font-size: 16px;
                 line-height: 19px;
                 text-align: right;
-                color: #C70000;
-
+                color: green;
             }
         }
     }
-`
-
-const Valor = styled.div`
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 50px;
-    background-color: #E5E5E5;
 `
 
 const Botoes = styled.div`

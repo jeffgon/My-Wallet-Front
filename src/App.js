@@ -16,6 +16,7 @@ export default function App() {
   const [valor, setValor] = useState("")
   const [descricao, setDescricao] = useState("")
   const [data, setData] = useState("")
+  const [info, setInfo] = useState([])
 
   return (
     <AuthProvider>
@@ -46,6 +47,8 @@ export default function App() {
           setNome={setNome}
           data={data}
           setData={setData}   
+          info={info}
+          setInfo={setInfo}
         />
       }/>
       <Route path="/nova-entrada" element={
