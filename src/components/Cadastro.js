@@ -30,7 +30,7 @@ export default function Cadastro({
             navigate("/")
             console.log(res)
         })
-        requisicao.catch((err) => console.log(err))
+        requisicao.catch((err) => console.log(err))      
     }
 
     return (

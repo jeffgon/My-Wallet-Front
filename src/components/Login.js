@@ -4,18 +4,20 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import React from "react"
 import dotenv from "dotenv"
+import { AuthContext } from "../provider";
 
 dotenv.config()
 
 
-export default function Login({ email, senha, setEmail, setSenha, setToken }){
+export default function Login({ email, senha, setEmail, setSenha }){
+    const { setToken } = React.useContext(AuthContext)
     const navigate = useNavigate()
 
     function fazerLogin(e){
         e.preventDefault();
 
-        const dados = { email, senha }
-        const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/login`, dados)
+        const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/login`, { email, senha })
+        
         requisicao.then((res) => {
             setToken(res.data)
             navigate("/home")           

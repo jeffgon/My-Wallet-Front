@@ -3,26 +3,46 @@ import { Link } from "react-router-dom"
 import React, { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import { AuthContext } from "../provider"
 
-export default function Home({ token, setNome, nome }){
+export default function Home({ nome, setNome }){
+    const { token } = React.useContext(AuthContext)
     const navigate = useNavigate()
+    const registros = []
 
-    function carregarRegistros(){
+   function carregarUsuario(){
         useEffect(() => {
-            const requisicao = axios.get(`${process.env.REACT_APP_API_URL}/registros`, {
+            const requisicao = axios.get(`${process.env.REACT_APP_API_URL}/usuario`, {
                 headers: {
-                        Authorization: `Bearer ${token}`
+                    "Authorization": `${token}`
                 }
-                });
-                requisicao.then((res) => {
-                    setNome(res.data.nome)
-                    console.log(res)
-                } )
-                requisicao.catch((err) => console.log(err))
-        }, []) 
-    }
-    carregarRegistros()
+            })
+            requisicao.then((res) => {
+                setNome(res.data.nome)
+            })
+        }, [])
+   }
+   carregarUsuario()
 
+   function carregarRegistros(){
+    useEffect(() => {
+        const requisicao = axios.get(`${process.env.REACT_APP_API_URL}/registros`, {
+            headers: {
+                "Authorization": `${token}`
+            }
+        })
+        requisicao.then((res) => {
+            console.log("chegou as informações de registro!", res)
+            registros.push(res.data)
+            console.log("registros:", registros)
+        })
+        requisicao.catch((err) => {
+            console.log("Algo deu erro no banco de dados!", err)
+        })
+
+    },[])
+   }
+   carregarRegistros()
 
     function voltarParaLogin(){
         navigate("/")
@@ -43,12 +63,22 @@ export default function Home({ token, setNome, nome }){
                 </ContainerSemInformacoes>
 
                 <ContainerInformacoes>
+                    
                     <section>
                         <div>
-                            <p>30/11</p>
+                            <p>30/1</p>
                             <h1>Entrada</h1>
                             <h2>Valor</h2>
                         </div>
+                        {registros.map(r => (
+                            r.map(reg => (
+                                <div>
+                                <p>{reg.data}</p>
+                                <h1>{reg.descricao}</h1>
+                                <h2>{reg.valor}</h2>
+                            </div>
+                            ))
+                        ))}
                     </section>
 
                     <Valor>
@@ -118,6 +148,7 @@ const ContainerSemInformacoes = styled.div`
     margin-top: 18px;
     border-radius: 5px;
     position: relative;
+    display: none;
     div {
         width: 100%;
         display: flex;
@@ -138,7 +169,6 @@ const ContainerSemInformacoes = styled.div`
 `
 
 const ContainerInformacoes = styled.div`
-    display: none;
     width: 100%;
     height: 450px;
     background-color: white;
@@ -157,6 +187,7 @@ const ContainerInformacoes = styled.div`
             justify-content: space-between;
             align-items: center;
             margin-bottom: 7px;
+            height: 40px;
             p {
                 font-family: 'Raleway';
                 font-style: normal;

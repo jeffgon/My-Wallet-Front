@@ -6,6 +6,7 @@ import Cadastro from "./components/Cadastro";
 import Home from "./components/Home";
 import NovaEntrada from "./components/NovaEntrada";
 import NovaSaida from "./components/NovaSaida";
+import { AuthProvider } from "./provider";
 
 export default function App() {
   const [nome, setNome] = useState("")
@@ -14,9 +15,10 @@ export default function App() {
   const [confirmaSenha, setConfirmaSenha] = useState("")
   const [valor, setValor] = useState("")
   const [descricao, setDescricao] = useState("")
-  const [token, setToken] = useState("")
+  const [data, setData] = useState("")
 
   return (
+    <AuthProvider>
    <BrowserRouter>
     <Routes>
       <Route path="/" element={
@@ -25,7 +27,6 @@ export default function App() {
           setEmail={setEmail} 
           senha={senha} 
           setSenha={setSenha}
-          setToken={setToken}
       />}/>
       <Route path="/cadastro" element={
         <Cadastro 
@@ -40,10 +41,11 @@ export default function App() {
         />
       }/>
       <Route path="/home" element={
-        <Home 
-          token={token}
-          setNome={setNome}
+        <Home
           nome={nome}
+          setNome={setNome}
+          data={data}
+          setData={setData}   
         />
       }/>
       <Route path="/nova-entrada" element={
@@ -55,10 +57,16 @@ export default function App() {
         />
       }/>
       <Route path="/nova-saida" element={
-        <NovaSaida />
+        <NovaSaida 
+          valor={valor}
+          setValor={setValor}
+          descricao={descricao}
+          setDescricao={setDescricao}
+        />
       }/>
     </Routes>
    </BrowserRouter>
+   </AuthProvider>
   );
 }
 

@@ -2,20 +2,30 @@ import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import React from "react"
+import { useContext } from "react"
+import { AuthContext } from "../provider"
 
 export default function NovaSaida({ valor, setValor, descricao, setDescricao }){
-
+    const { token } = React.useContext(AuthContext)
     const navigate = useNavigate()
 
-    function inserirNovaSaida(event){
-        event.preventDefault()
+    function inserirNovaSaida(e){
+        e.preventDefault()
 
-        const requisicao = axios.post("", {
-            valor: valor,
+        const requisicao = axios.post(`${process.env.REACT_APP_API_URL}/registros`, { 
+            valor: valor, 
             descricao: descricao
+        }, {
+            headers: {
+                "Authorization": `${token}`
+            }
         })
-        requisicao.then(() => navigate("/home"))
-        requisicao.catch((err) => console.log(err))
+            requisicao.then((res) => {
+                navigate("/home")
+            })
+            requisicao.catch(err => {
+                console.log("Algo deu errado no envio dos dados!", err)
+            })  
     }
 
     return (
@@ -25,7 +35,8 @@ export default function NovaSaida({ valor, setValor, descricao, setDescricao }){
                     <p>Nova saída</p>
                 </Topo>
 
-                <Formulario onSubmit={inserirNovaSaida}>
+                <Formulario>
+                    <form onSubmit={inserirNovaSaida}>
                     <input 
                         placeholder="Valor"
                         type="number"
@@ -41,6 +52,7 @@ export default function NovaSaida({ valor, setValor, descricao, setDescricao }){
                         required
                     />
                    <button type="submit"><p>Salvar saída</p></button>
+                   </form>
                 </Formulario>
             </Tela>
         </Container>
@@ -78,11 +90,10 @@ const Topo = styled.div`
     }
 `
 
-const Formulario = styled.form`
-    width: 95%;
+const Formulario = styled.div`
     margin-top: 40px;
     input {
-        width: 360px;
+        width: 99%;
         height: 58px;
         background-color: #FFFFFF;
         border-radius: 5px;
@@ -98,7 +109,7 @@ const Formulario = styled.form`
         }
     }
     button {
-        width: 360px;
+        width: 100%;
         height: 58px;
         background-color: #A328D6;
         border-radius: 5px;
@@ -116,3 +127,4 @@ const Formulario = styled.form`
         }
     }
 `
+
